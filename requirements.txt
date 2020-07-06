@@ -1,0 +1,6 @@
+flask
+flask-restful
+flask-mongoengine
+celery
+Flask-Caching
+flask-cors
