@@ -1,0 +1,11 @@
+from flask import Blueprint
+from flask_restful import Api
+from exceptions import errors
+from web.charts.views import ChartResource, PairListResource, PopulateResource
+
+api_bp = Blueprint('api', __name__)
+api = Api(api_bp, prefix='/api', errors=errors)
+
+api.add_resource(ChartResource, '/order-spread/<string:pair_id>', methods=['GET'])
+api.add_resource(PairListResource, '/pairs', methods=['GET', 'POST', 'PUT'])
+api.add_resource(PopulateResource, '/populate', methods=['GET'])
