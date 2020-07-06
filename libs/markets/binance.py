@@ -160,14 +160,14 @@ class Binance(object):
         payload = {'symbol': symbol}
         return self.signed_request('GET', '/api/v3/myTrades', **payload)
 
-    def get_trades_history(self, symbol, start_time, end_time):
+    def get_trades_history(self, symbol, start_time, end_time, limit=1000):
         """GET al trades by symbol"""
-        payload = {'symbol': symbol, 'start': start_time, 'end': end_time}
+        payload = {'symbol': symbol, 'start': start_time, 'end': end_time, 'limit': limit}
         return self.public_request('GET', '/api/v1/trades', **payload)
 
-    def get_closed_order(self, address, start_time, end_time):
+    def get_closed_order(self, address, start_time, end_time, limit=1000):
         """GET all trades by address"""
-        payload = {'address': address, 'start': start_time, 'end': end_time}
+        payload = {'address': address, 'start': start_time, 'end': end_time, 'limit': limit}
         return self.public_request('GET', '/api/v1/orders/closed', **payload)
 
     def get_deposit_history(self, **payload):

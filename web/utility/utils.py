@@ -29,6 +29,12 @@ def convert_time(time_str, timezone=1):
     return time_value.astimezone(pytz.utc)
 
 
+def current_time_range():
+    end = datetime.datetime.now()
+    start = end - datetime.timedelta(days=2)
+    return start, end
+
+
 def convert_time_local(utc_datetime):
     """covert to time local"""
     now_timestamp = time.time()
@@ -59,9 +65,9 @@ class MarketDataService(object):
 
     def _fetch_traders_id(self):
         """GET all traders data in time range"""
-        end_time = self.start_time - datetime.timedelta(days=7)
-        results = self.engine.trades_history(time_to_millisecond(self.start_time),
-                                             time_to_millisecond(end_time),
+        start_time = self.end_time - datetime.timedelta(days=30)
+        results = self.engine.trades_history(time_to_millisecond(start_time),
+                                             time_to_millisecond(self.end_time),
                                              self.pair)
         for result in results:
             if result['buyerId'] not in self.trader_ids:
@@ -133,7 +139,7 @@ class MarketDataService(object):
             spread_value = float(lowst_ask_order['price']) - float(highest_bid_order['price'])
             obj = {
                 'timestamp': datetime.datetime.fromtimestamp(key_timestamp/1000.0),
-                'value': float(spread_value/float(lowst_ask_order['price'])) * 100,
+                'value': spread_value,
                 'pair': self.pair
             }
             spread_datas.append(obj)

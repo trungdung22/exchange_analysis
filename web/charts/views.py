@@ -6,7 +6,7 @@ from exceptions import InternalServerError, ValidationError
 from flask_restful import marshal
 from mongoengine import Q
 from web.charts.models import SpreadData, Pairs
-from web.utility.utils import convert_time
+from web.utility.utils import convert_time, current_time_range
 from web.charts.serializers import chart_fields, pair_fields
 from web.tasks.actions import crawl_market_data
 
@@ -24,7 +24,7 @@ class ChartResource(BaseResource):
         try:
             pair = Pairs.objects.get_or_404(pk=pair_id)
             reports = SpreadData.objects(pair=pair.name)
-            reports = reports.filter((Q(timestamp__gte=start) & Q(timestamp__lte=end)))
+            reports = reports.filter((Q(timestamp__gte=start) & Q(timestamp__lte=end))).order_by('timestamp')
             return self.success(data={'results': marshal(list(reports), chart_fields)})
         except Exception as e:
             raise InternalServerError
@@ -59,11 +59,24 @@ class PairListResource(BaseResource):
         return self.success(data={'result': marshal(pair, pair_fields)})
 
 
+class OrderHistoryResource(BaseResource):
+    """data backfill resource"""
+    def get(self, pair_id):
+        self.add_filter('start', required=True, type=str, location='args')
+        self.add_filter('end', required=True, type=str, location='args')
+        data_filters = self.get_filter()
+        start = data_filters['start']
+        end = data_filters['end']
+        pair = Pairs.objects.get_or_404(pk=pair_id)
+        crawl_market_data.s(start, end, pair.name).apply_async()
+        return self.success(data='ok')
+
+
 class PopulateResource(BaseResource):
     """data population resource"""
     def get(self):
-        start_time = '2020-07-03'
-        end_time = '2020-07-04'
-        pair = 'BTCB-1DE_BUSD-BD1'
-        crawl_market_data(start_time, end_time, pair)
+        list = ['BNB_USDSB-1AC', 'BTCB-1DE_BUSD-BD1']
+        for e in list:
+            pair = Pairs(name=e)
+            pair.save()
         return self.success(data='ok')
