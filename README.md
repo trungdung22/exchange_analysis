@@ -24,6 +24,9 @@ $ celery worker -l info -A workers.celery
 $ celery beat -l info -A workers.celery
 ```
 
+### Install mongodb
+https://www.mongodb.com/try/download/community
+
 ### Populate database
 
 Init default key pairs exchange.
