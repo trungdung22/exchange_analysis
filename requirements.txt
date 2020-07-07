@@ -4,3 +4,4 @@ flask-mongoengine
 celery
 Flask-Caching
 flask-cors
+websocket_client

@@ -12,6 +12,7 @@ api.add_resource(PopulateResource, '/populate', methods=['GET'])
 api.add_resource(OrderHistoryResource, '/get-history-order/<string:pair_id>', methods=['GET'])
 
 
-@api_bp.route('/')
-def response_pages():
+@api_bp.route('/', defaults={'dummy': None})
+@api_bp.route('/<path:dummy>', methods=['GET'])
+def response_pages(dummy):
     return render_template('/index.html')
