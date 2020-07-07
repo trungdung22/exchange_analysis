@@ -16,6 +16,13 @@ $ docker run -it -d -p 5000:5000 docker_exchange_analysis:latest
 
 Now visit http://localhost:5000 
 
+### Run by cmd
+```
+$ python app.py 
+$ celery worker -l info -A workers.celery 
+$ celery beat -l info -A workers.celery
+```
+
 ### Populate database
 
 Init default key pairs exchange.

@@ -5,3 +5,4 @@ celery
 Flask-Caching
 flask-cors
 websocket_client
+redis
