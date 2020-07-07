@@ -78,7 +78,7 @@ class PopulateResource(BaseResource):
         list = ['BNB_USDSB-1AC', 'BTCB-1DE_BUSD-BD1']
         for e in list:
             pair = Pairs.objects(name=e)
-            if pair is None: 
+            if len(pair) == 0:
                 pair = Pairs(name=e)
                 pair.save()
         return self.success(data='ok')

@@ -38,10 +38,13 @@ class BinanceEngine(BaseEngine, ABC):
         self.conn = Binance(self.api_key, self.api_secret)
 
     def order_depth(self, pair=None, limit=10):
+        """get market order depth"""
         return self.conn.get_depth(pair, limit)
 
     def trades_history(self, start_time, end_time, pair=None):
+        """get market trades hisotry"""
         return self.conn.get_trades_history(pair, start_time, end_time)['trade']
 
     def close_orders(self, start_time, end_time, address=None):
+        """get market closed order"""
         return self.conn.get_closed_order(address, start_time, end_time)['order']
