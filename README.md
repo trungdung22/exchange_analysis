@@ -18,6 +18,7 @@ Now visit http://localhost:5000
 
 ### Run by cmd
 ```
+$ pip3 install -r requirement.txt
 $ python app.py 
 $ celery worker -l info -A workers.celery 
 $ celery beat -l info -A workers.celery
@@ -29,5 +30,7 @@ Init default key pairs exchange.
 ```
 $ GET http://localhost:5000/api/populate
 ```
+
+![alt_text](./data/example.png)
 
 
