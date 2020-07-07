@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, make_response
 from flask_restful import Api
 from exceptions import errors
 from web.charts.views import ChartResource, PairListResource, PopulateResource, OrderHistoryResource
@@ -10,3 +10,8 @@ api.add_resource(ChartResource, '/order-spread/<string:pair_id>', methods=['GET'
 api.add_resource(PairListResource, '/pairs', methods=['GET', 'POST', 'PUT'])
 api.add_resource(PopulateResource, '/populate', methods=['GET'])
 api.add_resource(OrderHistoryResource, '/get-history-order/<string:pair_id>', methods=['GET'])
+
+
+@api_bp.route('/')
+def response_pages():
+    return render_template('/index.html')
