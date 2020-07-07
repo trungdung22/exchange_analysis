@@ -10,7 +10,10 @@ from mongoengine import connect, Q
 @celery.task()
 def fetch_spread_bucket():
     current_time = datetime.utcnow()
-    connect('exchange', 'default', host='localhost')
+    try:
+        connect('exchange', 'default', host='localhost')
+    except: 
+        pass
     pairs = Pairs.objects
     for pair in pairs:
         if not pair.is_active:
@@ -30,9 +33,10 @@ def fetch_spread_bucket():
 @celery.task()
 def crawl_market_data(start_time, end_time, pair, **kwargs):
     print("Start:crawl_market_data")
-    init_db = kwargs.get('init_db', True)
-    if init_db:
+    try:
         connect('exchange', 'default', host='localhost')
+    except: 
+        pass 
     service = MarketDataService(start_time, end_time, pair)
     spread_datas = service.fetch_data()
     SpreadData.objects((Q(timestamp__gte=start_time) & Q(timestamp__lte=end_time))).delete()
