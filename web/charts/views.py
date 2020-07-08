@@ -25,7 +25,8 @@ class ChartResource(BaseResource):
             pair = Pairs.objects.get_or_404(pk=pair_id)
             reports = SpreadData.objects(pair=pair.name)
             reports = reports.filter((Q(timestamp__gte=start) & Q(timestamp__lte=end))).order_by('timestamp')
-            return self.success(data={'results': marshal(list(reports), chart_fields)})
+            results = marshal(list(reports), chart_fields)
+            return self.success(data={'results': results})
         except Exception as e:
             raise InternalServerError
 
