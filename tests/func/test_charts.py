@@ -22,9 +22,9 @@ def test_pair_list(app, client, pair_name):
 @pytest.mark.parametrize(
     'pair_id,start,end',
     [(
-        testdata.PAIR_OBJECT_ID_1,
-        '2020-07-02',
-        '2020-07-03',
+        testdata.PAIR_OBJECT_ID_2,
+        '2020-07-01',
+        '2020-07-05',
     )]
 )
 def test_spread_datas(app, client, pair_id, start, end):
@@ -44,7 +44,7 @@ def test_spread_datas(app, client, pair_id, start, end):
 @pytest.mark.parametrize(
     'pair_id',
     [(
-        testdata.PAIR_OBJECT_ID_1,
+        testdata.PAIR_OBJECT_ID_2,
     )]
 )
 def test_pair_list(app, client, pair_id):
