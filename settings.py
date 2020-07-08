@@ -63,6 +63,11 @@ class DevConfig(Config):
     # Put the db file in project root
     DB_PATH = os.path.join(Config.PROJECT_ROOT, DB_NAME)
     SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
+    MONGODB = {
+        'db': 'dev',
+        'alias': 'default',
+        'host': 'mongodb://localhost/exchange'
+    }
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(10 ** 6)
 
@@ -73,5 +78,10 @@ class TestConfig(Config):
     TESTING = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    MONGODB = {
+        'db': 'testing',
+        'alias': 'default',
+        'host': 'mongodb://localhost/test'
+    }
     # For faster tests; needs at least 4 to avoid "ValueError: Invalid rounds"
     BCRYPT_LOG_ROUNDS = 4

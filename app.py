@@ -13,11 +13,7 @@ def create_app(config_object=DevConfig):
     app.config.from_object(config_object)
     # app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
     # app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
-    app.config['MONGODB_SETTINGS'] = {
-        'db': 'testing',
-        'alias': 'default',
-        'host': 'mongodb://localhost/exchange'
-    }
+    app.config['MONGODB_SETTINGS'] = config_object.MONGODB
     register_blueprints(app)
     register_extensions(app)
     return app

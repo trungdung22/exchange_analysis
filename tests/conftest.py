@@ -4,9 +4,15 @@ from __future__ import unicode_literals
 from flask.testing import FlaskClient
 import pytest
 
-@pytest.fixture
-def create_app():
-    return _create_app
+from app import create_app as create_app_fac
+from settings import TestConfig
+import tests.testdata as testdata
+
+
+
+def _create_app_test(*args, **kwargs):
+    return create_app_fac(TestConfig)
+
 
 class TestClient(FlaskClient):
     def open(self, *args, **kwargs):
@@ -19,12 +25,17 @@ class TestClient(FlaskClient):
         return super(TestClient, self).open(*args, **kwargs)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
+def create_app():
+    return _create_app_test
+
+
+@pytest.fixture(scope='module')
 def app(create_app):
     app = create_app()
     with app.app_context():
         print('init_database')
-        testdata.Schema.init_database()
+        testdata.init_db()
     yield app
     # Handle after test
     from flask_mongoengine import create_connections, get_connection_settings
@@ -34,7 +45,8 @@ def app(create_app):
     db.drop_database(db_name)
     print('drop_database')
 
-@pytest.fixture
+
+@pytest.fixture(scope='module')
 def client(app):
     app.test_client_class = TestClient
     return app.test_client()
