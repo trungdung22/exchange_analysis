@@ -50,8 +50,19 @@ class ProdConfig(Config):
 
     ENV = 'prod'
     DEBUG = False
+    CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
+    CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+    CELERY_ACCEPT_CONTENT = ['json']
+    CELERY_TASK_SERIALIZER = 'json'
+    CELERY_RESULT_SERIALIZER = 'json'
+    CELERY_REDIS_MAX_CONNECTIONS = 5
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
                                              'postgresql://localhost/example')
+    MONGODB = {
+        'db': 'dev',
+        'alias': 'default',
+        'host': 'mongodb://db/exchange'
+    }
 
 
 class DevConfig(Config):

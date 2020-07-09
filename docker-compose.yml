@@ -8,18 +8,46 @@ services:
       - .:/code
     environment:
       FLASK_ENV: development
-  mongodb:
+  db:
     image: mongo:latest
     ports:
         - '27017:27017'
     volumes:  
         - air_scout-mongodb:/data/db
-  redis:
-    image: "redis:alpine"
-    ports:
-        - '6379:6379'
+  worker:
+    build:
+      context: "."
+      args:
+        - "FLASK_ENV=${FLASK_ENV:-production}"
+    command: celery worker -B -l info -A workers.celery
+    depends_on:
+      - "redis"
+    env_file:
+      - ".env"
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    stop_grace_period: "${DOCKER_STOP_GRACE_PERIOD:-3s}"
     volumes:
-        - air_scout-redis:/var/lib/redis
+      - "${DOCKER_WEB_VOLUME:-./public:/app/public}"
+  beat:
+    build:
+      context: "."
+      args:
+        - "FLASK_ENV=${FLASK_ENV:-production}"
+    command: celery beat -A workers.celery --loglevel=INFO
+    depends_on:
+      - "redis"
+    env_file:
+      - ".env"
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    stop_grace_period: "${DOCKER_STOP_GRACE_PERIOD:-3s}"
+  redis:
+    env_file:
+      - ".env"
+    image: "redis:5.0.7-buster"
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    stop_grace_period: "${DOCKER_STOP_GRACE_PERIOD:-3s}"
+    volumes:
+      - "redis:/data"
 volumes:
-    air_scout-redis:
-    air_scout-mongodb: 
+    redis: {}
+    air_scout-mongodb:
