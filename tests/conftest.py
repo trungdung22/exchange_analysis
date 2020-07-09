@@ -6,7 +6,7 @@ import pytest
 
 from app import create_app as create_app_fac
 from settings import TestConfig
-import tests.testdata as testdata
+from tests import testdata
 
 
 

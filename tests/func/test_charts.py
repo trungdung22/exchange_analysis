@@ -22,8 +22,8 @@ def test_pair_list(app, client, pair_name):
 @pytest.mark.parametrize(
     'pair_id,start,end',
     [(
-        testdata.PAIR_OBJECT_ID_2,
-        '2020-07-01',
+        testdata.PAIR_OBJECT_ID_1,
+        '2020-07-02',
         '2020-07-05',
     )]
 )
