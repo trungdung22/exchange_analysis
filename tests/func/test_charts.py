@@ -24,7 +24,7 @@ def test_pair_list(app, client, pair_name):
     [(
         testdata.PAIR_OBJECT_ID_1,
         '2020-07-02',
-        '2020-07-03',
+        '2020-07-05',
     )]
 )
 def test_spread_datas(app, client, pair_id, start, end):

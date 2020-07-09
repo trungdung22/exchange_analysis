@@ -8,6 +8,12 @@ services:
       - .:/code
     environment:
       FLASK_ENV: development
+  mongodb:
+    image: mongo:latest
+    ports:
+        - '27017:27017'
+    volumes:  
+        - air_scout-mongodb:/data/db
   redis:
     image: "redis:alpine"
     ports:

@@ -27,6 +27,12 @@ $ celery beat -l info -A workers.celery
 ### Install mongodb
 https://www.mongodb.com/try/download/community
 
+### Runing test case 
+```
+$ export PYTHONPATH=.
+$ pytest --setup-show tests/func/ -v
+```
+
 ### Populate database
 
 Init default key pairs exchange.
