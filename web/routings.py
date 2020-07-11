@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, make_response
 from flask_restful import Api
-from exceptions import errors
+from web.exceptions import errors
 from web.charts.views import ChartResource, PairListResource, PopulateResource, OrderHistoryResource
 
 api_bp = Blueprint('api', __name__)

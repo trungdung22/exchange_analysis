@@ -2,7 +2,7 @@
 """User views."""
 from flask import Blueprint
 from web.base.views import BaseResource
-from exceptions import InternalServerError, ValidationError
+from web.exceptions import InternalServerError, ValidationError
 from flask_restful import marshal
 from mongoengine import Q
 from web.charts.models import SpreadData, Pairs

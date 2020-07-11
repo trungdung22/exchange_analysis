@@ -1,13 +1,13 @@
 from flask import Flask
-from settings import DevConfig
+from web.settings import DevConfig
 from web.base.model import db
-from extensions import cors, cache, celery
+from web.extensions import cors, cache, celery
 
-from routings import api_bp
+from web.routings import api_bp
 
 
 def create_app(config_object=DevConfig):
-    app = Flask(__name__.split('.')[0], static_folder="./static/", template_folder='./static/build')
+    app = Flask(__name__.split('.')[0], static_folder="../static/", template_folder='../static/build')
     app.url_map.strict_slashes = False
 
     app.config.from_object(config_object)
